@@ -54,3 +54,25 @@ Route::prefix('admin')->middleware(['auth','isAdmin'])->group(function(){
         ],]
 ```
 
+2. I create new controller named "ClientController" declare new function call "login" and I checked the (email,password) exist in client table like the following:
+```
+public function login(Request $request)
+    {
+
+        // dd($request->has('password'));
+        if ($request->has('email') &&$request->has('password')  ){
+            $credintials=$request->only('email','password');
+            // dd($credintials);
+            if(Auth::guard('client')->attempt($credintials)){
+            // dd('$credintials');
+            return view('client_layout.client_dash');
+
+            }
+        }
+    }
+
+```
+3. I added new route as the following:
+```
+Route::post('/client/login',[ClientController::class,'login'])->name('client.login');
+```
